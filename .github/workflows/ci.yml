@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: vitaloop_upa
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+
+    env:
+      DATABASE_MIGRATOR_URL: postgres://postgres:postgres@localhost:5432/vitaloop_upa
+      DATABASE_APP_URL: postgres://vitaloop_app:devpass@localhost:5432/vitaloop_upa
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Create the non-superuser application role used by RLS tests.
+      - name: Prepare app role
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -d vitaloop_upa -v ON_ERROR_STOP=1 -c \
+            "CREATE ROLE vitaloop_app LOGIN PASSWORD 'devpass' NOSUPERUSER NOCREATEDB NOCREATEROLE; \
+             GRANT CONNECT ON DATABASE vitaloop_upa TO vitaloop_app;"
+
+      # Pipeline (Arquitetura §22): lint → typecheck → unit → migration → integration/RLS → build
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit tests (domain/auth/validation)
+        run: npm test
+      - name: Migrations
+        run: npm run db:migrate
+      - name: Seeds
+        run: npm run db:seed
+      - name: DB integrity + RLS tests
+        run: npm run db:test
+      - name: Build
+        run: npm run build --if-present

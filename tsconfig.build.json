@@ -1,0 +1,5 @@
+{
+  "//": "Deprecated: typecheck uses tsconfig.json (tsc -p). Kept as a no-op.",
+  "files": [],
+  "include": []
+}

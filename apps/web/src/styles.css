@@ -1,0 +1,555 @@
+:root {
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Paleta Institucional Hospitalar Vitaloop (Regra 60/30/10) */
+  --brand-navy: #0F2B36;       /* 30% Azul Petróleo Profundo (Estrutura / Sidebar / TopBar) */
+  --brand-navy-light: #184354;
+  --brand-mint: #56B8A5;       /* 10% Acentos Institucionais Menta Suave */
+  --brand-mint-dark: #3F9E8C;
+  --brand-pulse: #C0392B;      /* Alertas Médicos & Urgência */
+  --brand-yellow: #D97706;     /* Avisos & Atenção */
+  --brand-blue: #0284C7;       /* Contexto Assistencial */
+  --brand-orange: #EA580C;     /* Alertas de Permanência */
+  
+  --bg-app: #f8fafc;           /* 60% Fundo Off-White Slate Confortável */
+  --bg-card: #ffffff;
+  --text-main: #0f172a;        /* Azul-Petróleo/Cinza Escuro de Alta Legibilidade */
+  --text-muted: #64748b;      /* Cinza Médio Secundário */
+  --border-color: #e2e8f0;    /* Bordas Discretas */
+  
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px 0 rgb(15 43 54 / 0.04);
+  --shadow-md: 0 4px 6px -1px rgb(15 43 54 / 0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea { font-family: inherit; font-size: 0.92rem; }
+
+/* ==========================================================================
+   PADRÃO GLOBAL DE SCROLLBAR MODERNA (SLIM, DISCRETA E ELEGANTE)
+   ========================================================================== */
+
+/* Suporte NATIVO para W3C / Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
+}
+
+/* Suporte WebKit / Blink (Chrome, Edge, Opera, Safari, Electron) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.65);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--brand-navy-light);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* SCROLLBAR ESPECÍFICA PARA PAINÉIS ESCUROS (SIDEBAR DRAWER / MENU LATERAL) */
+.sidebar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-mint);
+}
+
+/* Layout Geral */
+.app-layout { display: flex; flex-direction: column; min-height: 100vh; position: relative; }
+
+/* TopBar Superior Institucional */
+.app-topbar {
+  background: var(--brand-navy);
+  color: #ffffff;
+  padding: 0.65rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-brand-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Botão Hamburger Limpo no Extremo Esquerdo */
+.topbar-hamburger-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.topbar-hamburger-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.topbar-hamburger-btn.active {
+  background: var(--brand-mint);
+  color: var(--brand-navy);
+  border-color: var(--brand-mint);
+  font-weight: 800;
+}
+
+.brand-title-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.brand-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.2px;
+}
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--brand-mint);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.user-menu { display: flex; align-items: center; gap: 1rem; }
+
+/* Overlay Backdrop do Menu Lateral */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 43, 54, 0.4);
+  backdrop-filter: blur(1px);
+  z-index: 999;
+}
+
+/* Sidebar Drawer Limpa (Menu Lateral da UPA) */
+.sidebar-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 290px;
+  background: var(--brand-navy);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  box-shadow: 4px 0 16px rgba(0,0,0,0.25);
+  animation: slideInLeft 0.15s ease-out;
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.sidebar-header {
+  padding: 0.85rem 1.15rem;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-close-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-close-btn:hover { background: rgba(255,255,255,0.15); }
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.85rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.section-header {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.section-door { color: #38bdf8; background: rgba(56, 189, 248, 0.08); }
+.section-permanence { color: #fb923c; background: rgba(251, 146, 60, 0.08); }
+.section-admin { color: #94a3b8; background: rgba(148, 163, 184, 0.08); }
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  color: #cbd5e1;
+  font-size: 0.86rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.12s;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+.sidebar-link:hover { background: rgba(255,255,255,0.06); color: #ffffff; }
+.sidebar-link.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--brand-mint);
+  font-weight: 700;
+  border-left: 3px solid var(--brand-mint);
+}
+
+/* Área Principal de Conteúdo */
+.main-wrapper { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+/* Sticky Patient Banner */
+.patient-banner {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.85rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+.pb-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; }
+.pb-patient-info { display: flex; align-items: center; gap: 0.85rem; }
+.pb-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--brand-navy);
+  color: var(--brand-mint);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 1.1rem;
+  border: 1px solid var(--brand-mint);
+}
+.pb-name { font-size: 1.1rem; font-weight: 800; color: var(--brand-navy); }
+.pb-details { display: flex; flex-wrap: wrap; gap: 0.85rem; font-size: 0.83rem; color: #334155; margin-top: 0.15rem; }
+.pb-details strong { color: var(--brand-navy); }
+
+.pb-badges-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; align-items: center; font-size: 0.8rem; }
+.badge-alert { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-weight: 700; }
+.badge-cid { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-weight: 700; }
+.badge-protocol { background: #fffbe6; color: #854d0e; border: 1px solid #fef08a; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-weight: 700; }
+.badge-capsule { background: #f8fafc; border: 1px solid #cbd5e1; padding: 0.2rem 0.5rem; border-radius: 999px; font-weight: 700; font-size: 0.76rem; }
+.capsule-today { color: #0369a1; border-color: #bae6fd; background: #f0f9ff; }
+.capsule-tomorrow { color: #991b1b; border-color: #fca5a5; background: #fef2f2; }
+
+/* Sub-Abas do Prontuário de Permanência Limpas */
+.chart-subnav {
+  background: #ffffff;
+  padding: 0 1.25rem;
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+}
+.chart-tab {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  padding: 0.65rem 0.85rem;
+  font-weight: 600;
+  font-size: 0.83rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.chart-tab:hover { color: var(--brand-navy); }
+.chart-tab.active { color: var(--brand-navy); border-bottom-color: var(--brand-navy); font-weight: 700; }
+
+/* Main Area Container */
+.main-content { flex: 1; padding: 1.25rem; max-width: 1440px; margin: 0 auto; width: 100%; }
+
+/* Cartões Clínicos Limpos */
+.card { background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-color); padding: 1.15rem; box-shadow: var(--shadow-sm); margin-bottom: 1.15rem; }
+.card-title { font-size: 1.05rem; font-weight: 800; color: var(--brand-navy); margin-bottom: 0.85rem; display: flex; justify: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.4rem; }
+
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.25rem; }
+.form-label { font-size: 0.82rem; font-weight: 700; color: var(--brand-navy); }
+.form-control {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-control:focus { border-color: var(--brand-navy); box-shadow: 0 0 0 2px rgba(15, 43, 54, 0.08); }
+
+/* Botões com Hierarquia Institucional */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+.btn-primary { background: var(--brand-navy); color: #ffffff; }
+.btn-primary:hover { background: var(--brand-navy-light); }
+.btn-mint { background: var(--brand-mint); color: var(--brand-navy); }
+.btn-mint:hover { background: var(--brand-mint-dark); color: #ffffff; }
+.btn-secondary { background: #f8fafc; color: #334155; border: 1px solid var(--border-color); }
+.btn-secondary:hover { background: #f1f5f9; }
+.btn-danger { background: var(--brand-pulse); color: #ffffff; }
+.btn-warning { background: var(--brand-yellow); color: #ffffff; }
+.btn-sm { padding: 0.3rem 0.6rem; font-size: 0.78rem; }
+
+/* Decisão Médica Bifurcação */
+.decision-card {
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  margin-top: 1.25rem;
+}
+.decision-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem; margin-top: 0.85rem; }
+.btn-decision-alta { background: #15803d; color: #ffffff; padding: 0.85rem; font-size: 0.95rem; }
+.btn-decision-reaval { background: #b45309; color: #ffffff; padding: 0.85rem; font-size: 0.95rem; }
+.btn-decision-permanence { background: #b91c1c; color: #ffffff; padding: 0.85rem; font-size: 0.95rem; }
+
+/* Tabelas */
+.table-responsive { overflow-x: auto; width: 100%; }
+.table { width: 100%; border-collapse: collapse; text-align: left; }
+.table th, .table td { padding: 0.65rem 0.85rem; border-bottom: 1px solid var(--border-color); font-size: 0.86rem; }
+.table th { background: #f8fafc; font-weight: 700; color: var(--brand-navy); }
+.table tr:hover { background: #f8fafc; }
+
+/* Manchester Badges */
+.badge-manchester {
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.72rem;
+  color: #ffffff;
+  display: inline-block;
+  text-transform: uppercase;
+}
+.badge-VERMELHO { background-color: #dc2626; }
+.badge-LARANJA { background-color: #ea580c; }
+.badge-AMARELO { background-color: #d97706; }
+.badge-VERDE { background-color: #16a34a; }
+.badge-AZUL { background-color: #2563eb; }
+
+/* Beds Grid & Cards (Paleta Hospitalar Desaturada e Institucional) */
+.beds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.85rem; margin-top: 0.75rem; }
+.bed-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  background: #ffffff;
+  position: relative;
+  transition: all 0.12s ease-in-out;
+}
+.bed-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.bed-card.free { border: 1px solid #e2e8f0; border-left: 4px solid #10b981; background: #ffffff; }
+.bed-card.occupied { border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; background: #ffffff; }
+.bed-card.reserved { border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; background: #ffffff; }
+.bed-card.blocked { border: 1px solid #e2e8f0; border-left: 4px solid #94a3b8; background: #f8fafc; opacity: 0.8; }
+.bed-card.extra { border: 1px dashed #38bdf8; background: #ffffff; }
+
+.bed-code { font-weight: 800; font-size: 0.98rem; color: var(--brand-navy); }
+.bed-status {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 0.18rem 0.45rem;
+  border-radius: 4px;
+  display: inline-block;
+  letter-spacing: 0.2px;
+}
+.status-LIVRE { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.status-OCUPADO { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+.status-RESERVADO { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
+.status-BLOQUEADO { background: #e2e8f0; color: #475569; border: 1px solid #cbd5e1; }
+
+.alert { padding: 0.65rem 0.9rem; border-radius: var(--radius-sm); margin-bottom: 0.85rem; font-size: 0.86rem; font-weight: 600; }
+.alert-info { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+.alert-warning { background: #fffbe6; color: #854d0e; border: 1px solid #fef08a; }
+.alert-danger { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+
+/* Styles de Impressão de Ficha Institucional */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .triage-print-sheet, .triage-print-sheet * {
+    visibility: visible;
+    display: block !important;
+  }
+  .triage-print-sheet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #ffffff;
+    color: #000000;
+  }
+}
+
+/* ==========================================================================
+   ESTILOS ERGONÔMICOS CLINICOS E ABA DE NAVEGAÇÃO DO PRONTUÁRIO (PEP)
+   ========================================================================== */
+
+/* Abas Clínicas */
+.pep-tabs-container {
+  display: flex;
+  gap: 0.4rem;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 1.25rem;
+  background: #ffffff;
+  padding: 0.5rem 0.5rem 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  overflow-x: auto;
+}
+
+.pep-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #64748b;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  white-space: nowrap;
+}
+
+.pep-tab-btn:hover {
+  color: var(--brand-navy);
+  background: #f8fafc;
+}
+
+.pep-tab-btn.active {
+  color: var(--brand-navy);
+  background: #f1f5f9;
+  border-bottom-color: var(--brand-mint);
+  font-weight: 800;
+}
+
+/* Badges e Chips Pastéis Suaves (Ergonomia Hospitalar) */
+.badge-soft-blue {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-soft-green {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-soft-amber {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-soft-purple {
+  background: #faf5ff;
+  color: #9333ea;
+  border: 1px solid #e9d5ff;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}

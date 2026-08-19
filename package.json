@@ -1,0 +1,32 @@
+{
+  "name": "vitaloop-upa",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Vitaloop UPA — Prontuário Eletrônico do Paciente exclusivo para Unidade de Pronto Atendimento (greenfield).",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npx tsc -p tsconfig.json",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "node --test --experimental-strip-types \"packages/domain/test/*.test.ts\" \"packages/auth/test/*.test.ts\" \"packages/validation/test/*.test.ts\" \"packages/documents/test/*.test.ts\"",
+    "db:start": "node scripts/db/local-pg.mjs start",
+    "db:stop": "node scripts/db/local-pg.mjs stop",
+    "db:migrate": "node scripts/db/migrate.mjs",
+    "db:seed": "node scripts/db/seed.mjs",
+    "db:reset": "node scripts/db/migrate.mjs --reset && node scripts/db/seed.mjs",
+    "db:test": "node scripts/db/run-sql-tests.mjs",
+    "verify": "npm run typecheck && npm run test && npm run db:test"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "pg": "^8.13.1",
+    "typescript": "^5.7.2"
+  }
+}
